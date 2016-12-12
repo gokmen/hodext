@@ -18,8 +18,7 @@ export function getFrontApp () {
   debug('frontApp found as follow', frontApp)
 
   return {
-    "name": frontApp('localizedName'),
-    "path": frontApp('executableURL')
+    "name": ""+frontApp('localizedName')
   }
 
 }
