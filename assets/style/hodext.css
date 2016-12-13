@@ -1,0 +1,103 @@
+@font-face {
+  font-family: 'Oxygen';
+  font-style: normal;
+  font-weight: 300;
+  src: local('Oxygen Light'), local('Oxygen-Light'), url(Oxygen-Light.woff) format('woff');
+}
+
+body {
+  background-color: rgba(20,20,20,.95);
+  color: white;
+  overflow: hidden;
+  font-family: 'Oxygen';
+  font-weight: 300;
+  border-radius: 0;
+  border:none;
+}
+
+#hodext-items::-webkit-scrollbar,
+#hodext-details::-webkit-scrollbar {
+  display: none;
+}
+
+#hodext-items {
+  margin: 0;
+  padding: 0;
+  height: 306px;
+  overflow-y: auto;
+}
+
+#hodext-details {
+  font-size: 14px;
+}
+
+div.hodext-item {
+
+  width: 100%;
+  height: 34px;
+  line-height: 34px;
+
+  padding: 0 4px 0 4px;
+
+  font-size: 14px;
+  color: white;
+
+  border-bottom: 1px solid #333;
+  box-sizing: border-box;
+
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+
+  -webkit-user-select: none;
+  cursor: default;
+
+}
+
+div.hodext-item.active {
+  background: rgba(255,255,255,0.2) !important;
+}
+
+div.hodext-item:hover {
+  background: rgba(255,255,255,0.05);
+}
+
+#search-input {
+  width: 100%;
+  box-sizing: border-box;
+  height: 42px;
+  line-height: 42px;
+  border: none;
+  border-bottom: 2px solid #999;
+  font-size: 22px;
+  padding: 10px;
+  background: rgba(80,80,80,.2);
+  color: white;
+  margin-bottom: 8px;
+}
+
+#search-input:focus {
+  outline: none;
+}
+
+body.white {
+  background-color: rgba(230,230,230,.95);
+}
+
+body.white #search-input {
+  border-bottom: 2px solid #666;
+  color: #333;
+}
+
+body.white div.hodext-item {
+  border-color: #ccc;
+  color: #333;
+}
+
+body.white div.hodext-item.active {
+  background: rgba(0,0,0,0.08) !important;
+}
+
+body.white div.hodext-item:hover {
+  background: rgba(0,0,0,0.02class);
+}
