@@ -1,0 +1,89 @@
+import _debug from 'debug'
+const debug = _debug('hodext:window')
+
+import {
+  app, systemPreferences, globalShortcut, BrowserWindow, ipcMain
+} from 'electron'
+
+import { firePaste } from './macutils'
+
+let hodextWindow = null
+
+let hideHodext = () => {
+  hodextWindow.blurWebView()
+  hodextWindow.blur()
+  app.hide()
+}
+
+let showHodext = () => {
+  app.show()
+  hodextWindow.focus()
+  hodextWindow.focusOnWebView()
+}
+
+let setHodextTheme = (dark = true) => {
+  hodextWindow.webContents.send('USE_DARK_THEME', dark)
+}
+
+app.dock.hide()
+
+app.on('window-all-closed', () => {
+  if (process.platform != 'darwin') {
+    app.quit()
+  }
+})
+
+app.on('ready', () => {
+  globalShortcut.register('Alt+Space', () => {
+    if (hodextWindow.isFocused() && hodextWindow.isVisible()) {
+      hideHodext()
+    } else {
+      showHodext()
+    }
+  })
+})
+
+app.on('will-quit', () => {
+  globalShortcut.unregisterAll()
+})
+
+ipcMain.on('HIDE_HODEXT',  hideHodext)
+ipcMain.on('FIRE_PASTE',   firePaste)
+
+systemPreferences.subscribeNotification(
+  'AppleInterfaceThemeChangedNotification', (event, info) =>
+    setHodextTheme(systemPreferences.isDarkMode())
+)
+
+export function createHodextWindow () {
+
+  hodextWindow = new BrowserWindow({
+    width: 500, height: 372, show: true,
+    frame: false, transparent: true, resizable: false,
+    scrollBounce: true, fullscreenable: false
+  })
+
+  hodextWindow.loadURL('file://' + __dirname + '/../assets/index.html')
+
+  debug('HodextWindow created!')
+
+  hodextWindow.setAlwaysOnTop(true)
+  hodextWindow.setVisibleOnAllWorkspaces(true)
+
+  setHodextTheme(systemPreferences.isDarkMode())
+
+  hodextWindow.on('blur', () => {
+    app.hide()
+  })
+
+  hodextWindow.on('closed', () => {
+    hodextWindow = null
+  })
+
+  hodextWindow.once('ready-to-show', () => {
+    debug('HodextWindow is ready to show!')
+    hodextWindow.show()
+  })
+
+  return hodextWindow
+}

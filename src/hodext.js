@@ -4,6 +4,7 @@ const debug = _debug('hodext')
 import { app } from 'electron'
 import { HodextController } from './controller'
 import { HodextStorage } from './storage'
+import { createHodextWindow } from './window'
 
 const Controller = new HodextController({
   watchImages: false,
@@ -11,8 +12,6 @@ const Controller = new HodextController({
 })
 
 const Storage = new HodextStorage()
-
-app.dock.hide();
 
 app.on('ready', () => {
 
@@ -22,5 +21,7 @@ app.on('ready', () => {
   })
 
   debug('APP is ready.')
+
+  createHodextWindow()
 
 });
