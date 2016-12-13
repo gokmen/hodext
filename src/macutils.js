@@ -1,6 +1,8 @@
 import _debug from 'debug'
 const debug = _debug('hodext:macutils')
 
+import { exec } from 'child_process'
+
 debug('Loading nodobjc...')
 
 import NodObjc from 'nodobjc'
@@ -21,4 +23,8 @@ export function getFrontApp () {
     "name": ""+frontApp('localizedName')
   }
 
+}
+
+export function firePaste () {
+  exec(`osascript -e 'tell application "System Events"' -e 'keystroke "v" using command down' -e 'end tell'`)
 }
