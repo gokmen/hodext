@@ -12,15 +12,17 @@ export class HodextStorage extends EventEmitter {
     super()
 
     this.options = options
-    this.storage = []
+    this.buffer  = []
     this.locked  = false
+
+    this.load()
 
   }
 
 
   store (data) {
 
-    this.storage.push(data)
+    this.buffer.push(data)
     this.save()
 
   }
@@ -32,15 +34,15 @@ export class HodextStorage extends EventEmitter {
 
     this.locked = true
 
-    let item = this.storage.pop()
-    let json = JSON.stringify(item) + "\n"
+    let item = this.buffer.pop()
+    let json = JSON.stringify(item) + '\n'
 
     debug('storing', json)
 
     fs.appendFile(StorageFile, json, (err) => {
       if (err) throw err
       this.locked = false
-      if (this.storage.length) this.save()
+      if (this.buffer.length) this.save()
     })
 
   }
@@ -61,5 +63,7 @@ export class HodextStorage extends EventEmitter {
     return this.storage
 
   }
+
+  getStorage () { return this.storage }
 
 }
