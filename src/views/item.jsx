@@ -1,3 +1,5 @@
+const debug = _debug('hodext:item')
+
 import React from 'react'
 import { getViewController } from './viewcontroller'
 
@@ -25,10 +27,12 @@ export class HodextItem extends React.Component {
   }
 
   handleClick () {
+    debug('clicked on item')
     Controller.activateByKey(this.props.data.key)
   }
 
   handleDoubleClick () {
+    debug('double clicked on item')
     Controller.useByKey(this.props.data.key)
   }
 

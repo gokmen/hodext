@@ -1,5 +1,4 @@
-import _debug from 'debug'
-const debug = _debug('hodext:window')
+const debug = require('debug')('hodext:window')
 
 import {
   app, systemPreferences, globalShortcut, BrowserWindow, ipcMain
@@ -88,5 +87,8 @@ export function createHodextWindow () {
     hodextWindow.show()
   })
 
+  debug('HodextWindow on screen now')
+
   return hodextWindow
+
 }

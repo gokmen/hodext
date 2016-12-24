@@ -1,5 +1,4 @@
-import _debug from 'debug'
-const debug = _debug('hodext:controller')
+const debug = require('debug')('hodext:controller')
 
 import { clipboard } from 'electron'
 import { EventEmitter } from 'events'
@@ -38,10 +37,10 @@ export class HodextController extends EventEmitter {
       this.currentText = content
 
       if (this.checkSafety(app)) {
-       var now = Date.now()
-       this.emit('SaveItem', { content, app, time: now, type: 'text' })
+        var now = Date.now()
+        this.emit('SaveItem', { content, app, time: now, type: 'text' })
       } else {
-       debug('Dropped unsafe item')
+        debug('Dropped unsafe item')
       }
     }
 

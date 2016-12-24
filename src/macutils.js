@@ -1,5 +1,4 @@
-import _debug from 'debug'
-const debug = _debug('hodext:macutils')
+const debug = require('debug')('hodext:macutils')
 
 import { exec } from 'child_process'
 

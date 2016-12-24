@@ -1,3 +1,4 @@
+const debug = _debug('hodext:viewcontroller')
 import { clipboard, ipcRenderer } from 'electron'
 import { EventEmitter } from 'events'
 

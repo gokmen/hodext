@@ -1,5 +1,4 @@
-import _debug from 'debug'
-const debug = _debug('hodext:storage')
+const debug = require('debug')('hodext:storage')
 
 import { EventEmitter } from 'events'
 import fs from 'fs'
@@ -49,11 +48,17 @@ export class HodextStorage extends EventEmitter {
 
   load () {
 
-    return fs.readFileSync(StorageFile)
+    debug('loading storage...')
+
+    this.storage = fs.readFileSync(StorageFile)
       .toString()
       .split('\n')
       .filter(Boolean)
       .map(JSON.parse)
+
+    debug('storage loaded...')
+
+    return this.storage
 
   }
 

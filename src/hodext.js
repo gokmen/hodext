@@ -1,5 +1,4 @@
-import _debug from 'debug'
-const debug = _debug('hodext')
+const debug = require('debug')('hodext')
 
 import { app } from 'electron'
 import { HodextController } from './controller'
@@ -20,8 +19,8 @@ app.on('ready', () => {
     Storage.store(item)
   })
 
-  debug('APP is ready.')
-
   createHodextWindow()
+
+  debug('APP is ready.')
 
 });

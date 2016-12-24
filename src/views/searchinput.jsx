@@ -1,3 +1,5 @@
+const debug = _debug('hodext:searchinput')
+
 import React from 'react'
 import { ipcRenderer } from 'electron'
 import { getViewController } from './viewcontroller'
@@ -5,6 +7,13 @@ import { getViewController } from './viewcontroller'
 let Controller = getViewController()
 
 export class HodextSearchInput extends React.Component {
+
+  constructor (props, context) {
+    super(props, context)
+    debug('created')
+  }
+
+  componentDidMount () { debug('on screen now') }
 
   render() {
     return (
