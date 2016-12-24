@@ -22,6 +22,7 @@
     "redux": "^3.6.0"
   },
   "devDependencies": {
+    "devtron": "^1.4.0",
     "electron-prebuilt": "^1.4.10"
   },
   "description": "Hold the Text!",

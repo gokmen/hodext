@@ -57,6 +57,9 @@ systemPreferences.subscribeNotification(
 
 export function createHodextWindow () {
 
+  if (process.env.DEBUG)
+    require('devtron').install()
+
   hodextWindow = new BrowserWindow({
     width: 500, height: 372, show: true,
     frame: false, transparent: true, resizable: false,
