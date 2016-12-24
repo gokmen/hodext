@@ -1,4 +1,6 @@
 const debug = _debug('hodext:viewcontroller')
+const Fuse = require('fuse.js')
+
 import { clipboard, ipcRenderer } from 'electron'
 import { EventEmitter } from 'events'
 
@@ -84,6 +86,19 @@ export class HodextViewController extends EventEmitter {
     this.selectedItem = 0
     this.dataChanged({ updateScrolls: false })
 
+    let options = {
+      tokenize: true,
+      threshold: 0.2,
+      location: 0,
+      distance: 100,
+      maxPatternLength: 32,
+      minMatchCharLength: 1,
+      keys: ['content', 'app']
+    }
+
+    debug(this.items)
+    let fuse = new Fuse(this.items, options)
+    debug(fuse.search(pattern))
   }
 
   activate (direction = 1) {

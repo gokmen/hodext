@@ -15,6 +15,7 @@
     "babel-preset-react": "^6.16.0",
     "babel-register": "^6.18.0",
     "debug": "^2.3.3",
+    "fuse.js": "^2.6.1",
     "nodobjc": "^2.1.0",
     "react": "^15.4.1",
     "react-dom": "^15.4.1",
