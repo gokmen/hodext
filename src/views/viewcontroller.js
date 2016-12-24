@@ -30,19 +30,19 @@ export class HodextViewController extends EventEmitter {
 
     super()
 
-    this.items = []
     this.options = options
-    this.selectedItem = 0
-
     this.loadStoredItems()
+
+    debug('ViewController created')
 
   }
 
   loadStoredItems () {
 
-    let loadedItems = Storage.load()
+    this.items = []
+    this.selectedItem = 0
 
-    loadedItems.forEach ( (item, index) => {
+    Storage.getStorage().forEach ( (item, index) => {
       if (index <= MAX_ITEM_COUNT)
         this.items.unshift({
           key     : index,
@@ -174,7 +174,6 @@ export class HodextViewController extends EventEmitter {
 
     this.items.splice(index, 1)
 
-
     this.visibleCount--
 
     if (this.selectedItem > 0)
@@ -201,7 +200,6 @@ export class HodextViewController extends EventEmitter {
 
     let { updateScrolls } = options
 
-    let activeItem = this.getActiveItem()
 
     if (updateScrolls)
       this.updateScrolls()
