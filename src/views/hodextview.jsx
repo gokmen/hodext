@@ -1,3 +1,5 @@
+const debug = _debug('hodext:view')
+
 import React from 'react'
 import { focus, getViewController } from './viewcontroller'
 import { HodextSearchInput } from './searchinput'
@@ -10,10 +12,15 @@ export default class HodextView extends React.Component {
   constructor (props, context) {
     super(props, context)
     this.state = { items: [] }
+
+    debug('created')
+
   }
 
 
   componentDidMount () {
+
+    debug('on screen now')
 
     this.setState({ items: Controller.items })
 

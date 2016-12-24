@@ -60,8 +60,8 @@ export function createHodextWindow () {
     require('devtron').install()
 
   hodextWindow = new BrowserWindow({
-    width: 500, height: 372, show: true,
     frame: false, transparent: true, resizable: false,
+    width: 500, height: 372, show: false,
     scrollBounce: true, fullscreenable: false
   })
 
