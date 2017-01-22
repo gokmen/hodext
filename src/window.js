@@ -56,8 +56,6 @@ systemPreferences.subscribeNotification(
 
 export function createHodextWindow () {
 
-  if (process.env.DEBUG)
-    require('devtron').install()
 
   hodextWindow = new BrowserWindow({
     frame: false, transparent: true, resizable: false,
@@ -74,13 +72,17 @@ export function createHodextWindow () {
 
   setHodextTheme(systemPreferences.isDarkMode())
 
-  hodextWindow.on('blur', () => {
-    app.hide()
-  })
+  if (!process.env.DEBUG) {
 
-  hodextWindow.on('closed', () => {
-    hodextWindow = null
-  })
+    hodextWindow.on('blur', () => {
+      app.hide()
+    })
+
+    hodextWindow.on('closed', () => {
+      hodextWindow = null
+    })
+    
+  }
 
   hodextWindow.once('ready-to-show', () => {
     debug('HodextWindow is ready to show!')
