@@ -3,7 +3,7 @@ const debug = require('debug')('hodext:storage')
 import { EventEmitter } from 'events'
 import fs from 'fs'
 
-const StorageFile = 'clipboard.json'
+import { EVENT_ADDITEM, STORAGE_FILE, NEWLINE } from './constants'
 
 export class HodextStorage extends EventEmitter {
 
@@ -23,6 +23,7 @@ export class HodextStorage extends EventEmitter {
   store (data) {
 
     this.buffer.push(data)
+    this.emit(EVENT_ADDITEM, data)
     this.save()
 
   }
@@ -35,11 +36,11 @@ export class HodextStorage extends EventEmitter {
     this.locked = true
 
     let item = this.buffer.pop()
-    let json = JSON.stringify(item) + '\n'
+    let json = JSON.stringify(item) + NEWLINE
 
     debug('storing', json)
 
-    fs.appendFile(StorageFile, json, (err) => {
+    fs.appendFile(STORAGE_FILE, json, (err) => {
       if (err) throw err
       this.locked = false
       if (this.buffer.length) this.save()
@@ -53,15 +54,15 @@ export class HodextStorage extends EventEmitter {
     debug('loading storage...')
 
     try {
-      fs.accessSync(StorageFile, fs.constants.R_OK | fs.constants.W_OK)
+      fs.accessSync(STORAGE_FILE, fs.constants.R_OK | fs.constants.W_OK)
     } catch (e) {
-      fs.writeFileSync(StorageFile, '')
+      fs.writeFileSync(STORAGE_FILE, '')
       debug('created a new storage.')
     }
 
-    this.storage = fs.readFileSync(StorageFile)
+    this.storage = fs.readFileSync(STORAGE_FILE)
       .toString()
-      .split('\n')
+      .split(NEWLINE)
       .filter(Boolean)
       .map(JSON.parse)
 
