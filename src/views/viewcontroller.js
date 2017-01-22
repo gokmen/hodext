@@ -9,6 +9,7 @@ import {
   MAX_CHAR_COUNT,
   SCROLL_THRESHOLD,
   MAX_ITEM_COUNT,
+  EVENT_CLIPBOARDCHANGED,
 } from '../constants'
 
 import { HodextStorage } from '../storage'
@@ -46,12 +47,7 @@ export class HodextViewController extends EventEmitter {
 
     Storage.getStorage().forEach ( (item, index) => {
       if (index <= MAX_ITEM_COUNT)
-        this.items.unshift({
-          key     : index,
-          visible : true,
-          app     : item.app.name,
-          content : item.content
-        })
+        this.addItem(item)
     })
 
     this.visibleCount = this.items.length
@@ -183,6 +179,15 @@ export class HodextViewController extends EventEmitter {
 
   }
 
+  addItem (item) {
+    this.items.unshift({
+      key     : this.items.length,
+      visible : true,
+      app     : item.app.name,
+      content : item.content
+    })
+  }
+
   removeItem (index, emitChange = true) {
 
     let item = this.items[index]
@@ -215,11 +220,10 @@ export class HodextViewController extends EventEmitter {
 
     let { updateScrolls } = options
 
-
     if (updateScrolls)
       this.updateScrolls()
 
-    this.emit('ClipboardChanged')
+    this.emit(EVENT_CLIPBOARDCHANGED)
 
   }
 
