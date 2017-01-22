@@ -52,6 +52,13 @@ export class HodextStorage extends EventEmitter {
 
     debug('loading storage...')
 
+    try {
+      fs.accessSync(StorageFile, fs.constants.R_OK | fs.constants.W_OK)
+    } catch (e) {
+      fs.writeFileSync(StorageFile, '')
+      debug('created a new storage.')
+    }
+
     this.storage = fs.readFileSync(StorageFile)
       .toString()
       .split('\n')
