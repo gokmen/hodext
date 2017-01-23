@@ -9,6 +9,7 @@ import {
   MAX_CHAR_COUNT,
   SCROLL_THRESHOLD,
   MAX_ITEM_COUNT,
+  EVENT_SAVEITEM,
   EVENT_CLIPBOARDCHANGED,
 } from '../constants'
 
@@ -35,6 +36,12 @@ export class HodextViewController extends EventEmitter {
 
     this.options = options
     this.loadStoredItems()
+
+    ipcRenderer.on(EVENT_SAVEITEM, (event, data) => {
+      debug('adding new item to view', data)
+      this.addItem(data)
+      this.dataChanged()
+    })
 
     debug('ViewController created')
 

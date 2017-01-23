@@ -16,12 +16,13 @@ const Storage = new HodextStorage()
 
 app.on('ready', () => {
 
+  let hodextWindow = createHodextWindow()
+
   Controller.on(EVENT_SAVEITEM, (item) => {
     debug('Save item', item)
+    hodextWindow.webContents.send(EVENT_SAVEITEM, item)
     Storage.store(item)
   })
-
-  createHodextWindow()
 
   debug('APP is ready.')
 
