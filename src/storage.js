@@ -12,38 +12,51 @@ export class HodextStorage extends EventEmitter {
     super()
 
     this.options = options
-    this.buffer  = []
-    this.locked  = false
+    this.writeBuffer = []
+    this.locked = false
 
     this.load()
 
   }
 
 
-  store (data) {
+  write (data) {
 
-    this.buffer.push(data)
-    this.save()
+    this.writeBuffer.push(data)
+    this.sync()
 
   }
 
-  save () {
 
-    if (this.locked)
-      return
+
+  sync () {
+
+    if (this.locked) {
+      debug('file locked trying again in 500ms')
+      return setTimeout(this.sync, 500)
+    }
 
     this.locked = true
 
-    let item = this.buffer.pop()
-    let json = JSON.stringify(item) + NEWLINE
+    if (this.writeBuffer.length) {
 
-    debug('storing', json)
+      let item = this.writeBuffer.pop()
+      let key  = item.time.toString()
+      let json = key + '-' + JSON.stringify(item) + NEWLINE
 
-    fs.appendFile(STORAGE_FILE, json, (err) => {
-      if (err) throw err
+      debug('storing', json)
+
+      fs.appendFile(STORAGE_FILE, json, (err) => {
+        this.locked = false
+        if (this.writeBuffer.length)
+          this.write()
+      })
+
+
+
+    } else {
       this.locked = false
-      if (this.buffer.length) this.save()
-    })
+    }
 
   }
 
@@ -63,9 +76,8 @@ export class HodextStorage extends EventEmitter {
       .toString()
       .split(NEWLINE)
       .filter(Boolean)
-      .map(JSON.parse)
-
-    debug('storage loaded...')
+      .map((line) => { return JSON.parse(line.slice(14)) })
+    debug('storage loaded with', this.storage.length, 'items')
 
     return this.storage
 

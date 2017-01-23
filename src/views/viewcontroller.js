@@ -11,7 +11,7 @@ import {
   MAX_ITEM_COUNT,
   EVENT_HIDE,
   EVENT_PASTE,
-  EVENT_SAVEITEM,
+  EVENT_WRITE_ITEM,
   EVENT_USE_DARK,
   EVENT_CLIPBOARD_CHANGED,
 } from '../constants'
@@ -40,7 +40,7 @@ export class HodextViewController extends EventEmitter {
     this.options = options
     this.loadStoredItems()
 
-    ipcRenderer.on(EVENT_SAVEITEM, (event, data) => {
+    ipcRenderer.on(EVENT_WRITE_ITEM, (event, data) => {
       debug('adding new item to view', data)
       this.addItem(data)
       this.dataChanged()

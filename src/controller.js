@@ -4,7 +4,7 @@ import { clipboard } from 'electron'
 import { EventEmitter } from 'events'
 import { getFrontApp } from './macutils'
 
-import { EVENT_SAVEITEM } from './constants'
+import { EVENT_WRITE_ITEM } from './constants'
 
 export class HodextController extends EventEmitter {
 
@@ -39,7 +39,7 @@ export class HodextController extends EventEmitter {
 
       if (this.checkSafety(app)) {
         var now = Date.now()
-        this.emit(EVENT_SAVEITEM, { content, app, time: now, type: 'text' })
+        this.emit(EVENT_WRITE_ITEM, { content, app, time: now, type: 'text' })
       } else {
         debug('Dropped unsafe item')
       }
@@ -57,7 +57,7 @@ export class HodextController extends EventEmitter {
       var now = Date.now()
       var app = getFrontApp()
 
-      this.emit(EVENT_SAVEITEM, { content, app, time: now, type: 'image' })
+      this.emit(EVENT_WRITE_ITEM, { content, app, time: now, type: 'image' })
 
       this.readImage(content)
       // Update current text accordingly to ignore
