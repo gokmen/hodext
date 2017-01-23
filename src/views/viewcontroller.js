@@ -188,7 +188,7 @@ export class HodextViewController extends EventEmitter {
 
   addItem (item) {
     this.items.unshift({
-      key     : this.items.length,
+      key     : item.time,
       visible : true,
       app     : item.app.name,
       content : item.content

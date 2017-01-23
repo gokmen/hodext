@@ -10,9 +10,10 @@ const Controller = getViewController()
 export default class HodextView extends React.Component {
 
   constructor (props, context) {
-    super(props, context)
-    this.state = { items: [] }
 
+    super(props, context)
+
+    this.state = { items: [] }
     debug('created')
 
   }
