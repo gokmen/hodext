@@ -5,6 +5,7 @@ import {
 } from 'electron'
 
 import { firePaste } from './macutils'
+import { EVENT_HIDE, EVENT_PASTE, EVENT_USE_DARK } from './constants'
 
 let hodextWindow = null
 
@@ -21,7 +22,7 @@ let showHodext = () => {
 }
 
 let setHodextTheme = (dark = true) => {
-  hodextWindow.webContents.send('USE_DARK_THEME', dark)
+  hodextWindow.webContents.send(EVENT_USE_DARK, dark)
 }
 
 app.dock.hide()
@@ -46,8 +47,8 @@ app.on('will-quit', () => {
   globalShortcut.unregisterAll()
 })
 
-ipcMain.on('HIDE_HODEXT',  hideHodext)
-ipcMain.on('FIRE_PASTE',   firePaste)
+ipcMain.on(EVENT_HIDE, hideHodext)
+ipcMain.on(EVENT_PASTE, firePaste)
 
 systemPreferences.subscribeNotification(
   'AppleInterfaceThemeChangedNotification', (event, info) =>

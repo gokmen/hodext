@@ -8,4 +8,8 @@ export const MAX_ITEM_COUNT = 500
 export const STORAGE_FILE = 'clipboard.json'
 
 export const EVENT_SAVEITEM = 'SaveItem'
-export const EVENT_CLIPBOARDCHANGED = 'ClipboardChanged'
+export const EVENT_CLIPBOARD_CHANGED = 'ClipboardChanged'
+
+export const EVENT_PASTE = 'Paste'
+export const EVENT_HIDE = 'Hide'
+export const EVENT_USE_DARK = 'UseDark'

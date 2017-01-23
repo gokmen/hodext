@@ -16,7 +16,6 @@ export class HodextController extends EventEmitter {
     super()
 
     this.options = options
-    this.buffer  = []
 
     this.readText()
     if (options.watchImages)

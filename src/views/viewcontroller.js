@@ -9,14 +9,17 @@ import {
   MAX_CHAR_COUNT,
   SCROLL_THRESHOLD,
   MAX_ITEM_COUNT,
+  EVENT_HIDE,
+  EVENT_PASTE,
   EVENT_SAVEITEM,
-  EVENT_CLIPBOARDCHANGED,
+  EVENT_USE_DARK,
+  EVENT_CLIPBOARD_CHANGED,
 } from '../constants'
 
 import { HodextStorage } from '../storage'
 const Storage = new HodextStorage()
 
-ipcRenderer.on('USE_DARK_THEME', (event, dark) => {
+ipcRenderer.on(EVENT_USE_DARK, (event, dark) => {
   if (dark) {
     document.body.classList.remove('white')
   } else {
@@ -145,8 +148,8 @@ export class HodextViewController extends EventEmitter {
     clipboard.writeText(newContent)
 
     if (paste) {
-      ipcRenderer.send('FIRE_PASTE')
-      ipcRenderer.send('HIDE_HODEXT')
+      ipcRenderer.send(EVENT_PASTE)
+      ipcRenderer.send(EVENT_HIDE)
     }
 
   }
@@ -230,7 +233,7 @@ export class HodextViewController extends EventEmitter {
     if (updateScrolls)
       this.updateScrolls()
 
-    this.emit(EVENT_CLIPBOARDCHANGED)
+    this.emit(EVENT_CLIPBOARD_CHANGED)
 
   }
 
