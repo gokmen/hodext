@@ -106,7 +106,7 @@ export class HodextViewController extends EventEmitter {
     else
       this.selectedItem = this.selectedItem + direction
 
-    this.dataChanged({ updateScrolls: true })
+    this.dataChanged()
 
   }
 
@@ -202,7 +202,7 @@ export class HodextViewController extends EventEmitter {
       this.selectedItem = 0
 
     if (emitChange)
-      this.dataChanged({ updateScrolls: true })
+      this.dataChanged()
 
     return item.content
 
@@ -218,7 +218,7 @@ export class HodextViewController extends EventEmitter {
 
   dataChanged (options = {}) {
 
-    let { updateScrolls } = options
+    let { updateScrolls = true } = options
 
     if (updateScrolls)
       this.updateScrolls()
