@@ -3,7 +3,7 @@ const debug = require('debug')('hodext:storage')
 import { EventEmitter } from 'events'
 import fs from 'fs'
 
-import { EVENT_ADDITEM, STORAGE_FILE, NEWLINE } from './constants'
+import { STORAGE_FILE, NEWLINE } from './constants'
 
 export class HodextStorage extends EventEmitter {
 
@@ -23,7 +23,6 @@ export class HodextStorage extends EventEmitter {
   store (data) {
 
     this.buffer.push(data)
-    this.emit(EVENT_ADDITEM, data)
     this.save()
 
   }
