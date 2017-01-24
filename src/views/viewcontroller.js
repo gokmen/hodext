@@ -10,15 +10,14 @@ import {
   MAX_CHAR_COUNT,
   SCROLL_THRESHOLD,
   MAX_ITEM_COUNT,
+  ACTION_LOAD,
   EVENT_HIDE,
   EVENT_PASTE,
+  EVENT_LOADED,
   EVENT_WRITE_ITEM,
   EVENT_USE_DARK,
   EVENT_CLIPBOARD_CHANGED,
 } from '../constants'
-
-import { HodextStorage } from '../storage'
-const Storage = new HodextStorage()
 
 
 export class HodextViewController extends EventEmitter {
@@ -27,8 +26,16 @@ export class HodextViewController extends EventEmitter {
 
     super()
 
+    this.items = []
     this.options = options
-    this.loadStoredItems()
+    this.selectedItem = 0
+    this.visibleCount = 0
+
+    ipcRenderer.on(EVENT_LOADED, (event, items) => {
+      this.loadStoredItems(items)
+    })
+
+    ipcRenderer.send(ACTION_LOAD)
 
     ipcRenderer.on(EVENT_WRITE_ITEM, (event, data) => {
       debug('adding new item to view', data)
@@ -40,12 +47,12 @@ export class HodextViewController extends EventEmitter {
 
   }
 
-  loadStoredItems () {
+  loadStoredItems (items) {
 
     this.items = []
     this.selectedItem = 0
 
-    Storage.getStorage().forEach ( (item, index) => {
+    items.forEach ( (item, index) => {
       if (index <= MAX_ITEM_COUNT)
         this.addItem(item)
     })

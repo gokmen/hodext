@@ -3,9 +3,10 @@ const debug = require('debug')('hodext:storage')
 import { EventEmitter } from 'events'
 import fs from 'fs'
 
-import { STORAGE_FILE, NEWLINE } from './constants'
+import { STORAGE_FILE, NEWLINE, EVENT_LOADED } from './constants'
 
 export class HodextStorage extends EventEmitter {
+
 
   constructor ( options = {} ) {
 
@@ -26,7 +27,6 @@ export class HodextStorage extends EventEmitter {
     this.sync()
 
   }
-
 
 
   sync () {
@@ -52,8 +52,6 @@ export class HodextStorage extends EventEmitter {
           this.write()
       })
 
-
-
     } else {
       this.locked = false
     }
@@ -77,7 +75,9 @@ export class HodextStorage extends EventEmitter {
       .split(NEWLINE)
       .filter(Boolean)
       .map((line) => { return JSON.parse(line.slice(14)) })
+    
     debug('storage loaded with', this.storage.length, 'items')
+    this.emit(EVENT_LOADED, this.storage)
 
     return this.storage
 

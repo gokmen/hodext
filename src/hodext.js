@@ -1,11 +1,13 @@
 const debug = require('debug')('hodext')
 
-import { app } from 'electron'
+import { app, ipcMain } from 'electron'
 import { HodextController } from './controller'
 import { HodextStorage } from './storage'
 import { createHodextWindow } from './window'
 
 import {
+  ACTION_LOAD,
+  EVENT_LOADED,
   EVENT_WRITE_ITEM,
   EVENT_DELETE_ITEM
 } from './constants'
@@ -27,6 +29,10 @@ app.on('ready', () => {
     hodextWindow.webContents.send(EVENT_WRITE_ITEM, item)
     Storage.write(item)
 
+  })
+
+  ipcMain.on(ACTION_LOAD, () => {
+    hodextWindow.webContents.send(EVENT_LOADED, Storage.getStorage())
   })
 
   debug('APP is ready.')
