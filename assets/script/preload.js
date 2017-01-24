@@ -1,0 +1,1 @@
+window.localStorage.debug = process.env.DEBUG

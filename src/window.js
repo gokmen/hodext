@@ -60,7 +60,10 @@ export function createHodextWindow () {
   hodextWindow = new BrowserWindow({
     frame: false, transparent: true, resizable: false,
     width: 500, height: 372, show: false,
-    scrollBounce: true, fullscreenable: false
+    scrollBounce: true, fullscreenable: false,
+    webPreferences: {
+      preload:  __dirname + '/../assets/script/preload.js'
+    }
   })
 
   hodextWindow.loadURL('file://' + __dirname + '/../assets/index.html')
