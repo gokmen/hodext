@@ -1,11 +1,13 @@
 const debug = _debug('hodext:view')
 
 import React from 'react'
-import { focus, getViewController } from './viewcontroller'
+import { getViewController } from './viewcontroller'
 import { HodextSearchInput } from './searchinput'
 import { HodextItem } from './item'
+import { focus } from './helpers'
 
 const Controller = getViewController()
+
 
 export default class HodextView extends React.Component {
 

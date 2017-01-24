@@ -3,6 +3,7 @@ const debug = _debug('hodext:main')
 import React from 'react'
 import ReactDOM from 'react-dom'
 import HodextView from '../src/views/hodextview.jsx'
+import { focus } from '../src/views/helpers'
 
 window.onload = function () {
   debug('Window loaded')
@@ -11,5 +12,5 @@ window.onload = function () {
 }
 
 window.addEventListener('focus', () =>
-  document.getElementById('search-input').focus()
+  focus()
 )

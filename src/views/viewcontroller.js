@@ -3,6 +3,7 @@ const Fuse = require('fuse.js')
 
 import { clipboard, ipcRenderer } from 'electron'
 import { EventEmitter } from 'events'
+import { focus } from './helpers'
 
 import {
   ITEM_HEIGHT,
@@ -19,17 +20,6 @@ import {
 import { HodextStorage } from '../storage'
 const Storage = new HodextStorage()
 
-ipcRenderer.on(EVENT_USE_DARK, (event, dark) => {
-  if (dark) {
-    document.body.classList.remove('white')
-  } else {
-    document.body.classList.add('white')
-  }
-})
-
-export function focus () {
-  document.getElementById('search-input').focus()
-}
 
 export class HodextViewController extends EventEmitter {
 
@@ -244,3 +234,11 @@ let Controller
 export function getViewController () {
   return Controller = Controller || new HodextViewController()
 }
+
+ipcRenderer.on(EVENT_USE_DARK, (event, dark) => {
+  if (dark) {
+    document.body.classList.remove('white')
+  } else {
+    document.body.classList.add('white')
+  }
+})
