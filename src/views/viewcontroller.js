@@ -58,7 +58,8 @@ export class HodextViewController extends EventEmitter {
     })
 
     this.visibleCount = this.items.length
-
+    this.dataChanged()
+    
   }
 
   checkItemLimits () {
