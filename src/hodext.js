@@ -37,4 +37,9 @@ app.on('ready', () => {
 
   debug('APP is ready.')
 
+  if (process.argv.includes('--quit')) {
+    debug('will quit once window is ready.')
+    hodextWindow.on('show', app.quit)
+  }
+
 });
