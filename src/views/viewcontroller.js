@@ -220,7 +220,8 @@ export class HodextViewController extends EventEmitter {
 
     let diff = this.selectedItem - SCROLL_THRESHOLD
     let itemContainer = document.getElementById('hodext-items')
-    itemContainer.scrollTop = ITEM_HEIGHT * diff
+    if (itemContainer)
+      itemContainer.scrollTop = ITEM_HEIGHT * diff
 
   }
 

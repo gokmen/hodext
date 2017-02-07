@@ -13,17 +13,27 @@ export class HodextStorage extends EventEmitter {
     super()
 
     this.options = options
-    this.writeBuffer = []
-    this.locked = false
 
-    this.load()
+    this.writeBuffer  = []
+    this.deleteBuffer = []
+
+    this.locked = false
 
   }
 
 
   write (data) {
 
+    this.storage.push(data)
     this.writeBuffer.push(data)
+    this.sync()
+
+  }
+
+
+  delete (key) {
+
+    this.deleteBuffer.push(key)
     this.sync()
 
   }
@@ -59,10 +69,15 @@ export class HodextStorage extends EventEmitter {
   }
 
 
-  load () {
+  getStorage () {
 
     debug('loading storage...')
 
+    if (this.storage) {
+      debug('storage already loaded skipping')
+      return this.storage
+    }
+     
     try {
       fs.accessSync(STORAGE_FILE, fs.constants.R_OK | fs.constants.W_OK)
     } catch (e) {
@@ -82,7 +97,5 @@ export class HodextStorage extends EventEmitter {
     return this.storage
 
   }
-
-  getStorage () { return this.storage }
 
 }
