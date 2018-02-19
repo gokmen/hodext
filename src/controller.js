@@ -7,9 +7,7 @@ import { getFrontApp } from './macutils'
 import { EVENT_WRITE_ITEM } from './constants'
 
 export class HodextController extends EventEmitter {
-
-  constructor ( options = {} ) {
-
+  constructor(options = {}) {
     options.repeatEvery = options.repeatEvery || 250
     options.watchImages = options.watchImages || false
 
@@ -18,20 +16,21 @@ export class HodextController extends EventEmitter {
     this.options = options
 
     this.readText()
-    if (options.watchImages)
-      this.readImage()
+    if (options.watchImages) this.readImage()
 
-    debug('Loaded and watching for changes every', options.repeatEvery, 'miliseconds')
+    debug(
+      'Loaded and watching for changes every',
+      options.repeatEvery,
+      'miliseconds'
+    )
 
     this.watchClipboard()
-
   }
 
-  tickText () {
-
+  tickText() {
     let content = null
 
-    if (content = this.checkTextChange()) {
+    if ((content = this.checkTextChange())) {
       debug('New text found!')
 
       var app = getFrontApp()
@@ -44,14 +43,12 @@ export class HodextController extends EventEmitter {
         debug('Dropped unsafe item')
       }
     }
-
   }
 
-  tickImage () {
-
+  tickImage() {
     let content = null
 
-    if (content = this.checkImageChange()) {
+    if ((content = this.checkImageChange())) {
       debug('New image found!')
 
       var now = Date.now()
@@ -63,58 +60,61 @@ export class HodextController extends EventEmitter {
       // Update current text accordingly to ignore
       // copied image file name/path as text
       this.currentText = clipboard.readText()
-
     }
-
   }
 
-  readImage (image) {
+  readImage(image) {
     this.currentImage = image || clipboard.readImage()
     this.currentImage._data = this.currentImage.toDataURL()
     return this.currentImage
   }
 
-  readText () {
+  readText() {
     this.currentText = clipboard.readText()
     return this.currentText
   }
 
-  checkTextChange () {
+  deleteText(text) {
+    if (this.currentText == text)
+      this.currentText = null
+  }
+
+  checkTextChange() {
     let text = clipboard.readText()
-    if (text.trim() != '' && this.currentText !== text)
-      return text
+    if (text.trim() != '' && this.currentText !== text) return text
     return false
   }
 
-  checkImageChange () {
+  checkImageChange() {
     let img = clipboard.readImage()
     if (!img.isEmpty() && this.currentImage._data !== img.toDataURL())
       return img
     return false
   }
 
-  watchClipboard () {
-
-    this.textTimer = setInterval(() =>
-      this.tickText()
-    , this.options.repeatEvery)
+  watchClipboard() {
+    this.textTimer = setInterval(
+      () => this.tickText(),
+      this.options.repeatEvery
+    )
 
     if (this.options.watchImages) {
-      this.imageTimer = setInterval(() =>
-        this.tickImage()
-      , this.options.repeatEvery * 2)
+      this.imageTimer = setInterval(
+        () => this.tickImage(),
+        this.options.repeatEvery * 2
+      )
     }
-
   }
 
-  setClipboard (content) {
+  setClipboard(content) {
     clipboard.writeText(content)
     this.tick()
   }
 
-  checkSafety (app) {
-    return !clipboard.has('org.nspasteboard.ConcealedType') ||
-           !clipboard.has('com.agilebits.onepassword')
+  checkSafety(app) {
+    return (
+      !clipboard.has('org.nspasteboard.ConcealedType') ||
+      !clipboard.has('com.agilebits.onepassword')
+    )
   }
-
 }

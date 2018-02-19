@@ -1,7 +1,11 @@
 const debug = require('debug')('hodext:window')
 
 import {
-  app, systemPreferences, globalShortcut, BrowserWindow, ipcMain
+  app,
+  systemPreferences,
+  globalShortcut,
+  BrowserWindow,
+  ipcMain,
 } from 'electron'
 
 import { firePaste } from './macutils'
@@ -21,8 +25,12 @@ let showHodext = () => {
   hodextWindow.focusOnWebView()
 }
 
-let setHodextTheme = (dark = true) => {
-  hodextWindow.webContents.send(EVENT_USE_DARK, dark)
+export function setHodextTheme() {
+  hodextWindow.webContents.send(EVENT_USE_DARK, systemPreferences.isDarkMode())
+}
+
+if (app.makeSingleInstance(() => showHodext())) {
+  process.exit()
 }
 
 app.dock.hide()
@@ -51,19 +59,23 @@ ipcMain.on(EVENT_HIDE, hideHodext)
 ipcMain.on(EVENT_PASTE, firePaste)
 
 systemPreferences.subscribeNotification(
-  'AppleInterfaceThemeChangedNotification', (event, info) =>
-    setHodextTheme(systemPreferences.isDarkMode())
+  'AppleInterfaceThemeChangedNotification',
+  (event, info) => setHodextTheme()
 )
 
-export function createHodextWindow () {
-
+export function createHodextWindow() {
   hodextWindow = new BrowserWindow({
-    frame: false, transparent: true, resizable: false,
-    width: 500, height: 372, show: false,
-    scrollBounce: true, fullscreenable: false,
+    frame: false,
+    transparent: true,
+    resizable: false,
+    width: 500,
+    height: 372,
+    show: false,
+    scrollBounce: true,
+    fullscreenable: false,
     webPreferences: {
-      preload:  __dirname + '/../assets/script/preload.js'
-    }
+      preload: __dirname + '/../assets/script/preload.js',
+    },
   })
 
   hodextWindow.loadURL('file://' + __dirname + '/../assets/index.html')
@@ -73,10 +85,7 @@ export function createHodextWindow () {
   hodextWindow.setAlwaysOnTop(true)
   hodextWindow.setVisibleOnAllWorkspaces(true)
 
-  setHodextTheme(systemPreferences.isDarkMode())
-
   if (!process.env.DEBUG) {
-
     hodextWindow.on('blur', () => {
       app.hide()
     })
@@ -84,8 +93,9 @@ export function createHodextWindow () {
     hodextWindow.on('closed', () => {
       hodextWindow = null
     })
-    
   }
+
+  hodextWindow.webContents.once('dom-ready', setHodextTheme)
 
   hodextWindow.once('ready-to-show', () => {
     debug('HodextWindow is ready to show!')
@@ -95,5 +105,4 @@ export function createHodextWindow () {
   debug('HodextWindow on screen now')
 
   return hodextWindow
-
 }

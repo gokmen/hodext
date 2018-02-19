@@ -10,20 +10,18 @@ const NSSharedWorkspace = NodObjc.NSWorkspace('sharedWorkspace')
 
 debug('Nodobjc loaded.')
 
-export function getFrontApp () {
-
+export function getFrontApp() {
   debug('Getting frontApp...')
 
-  let frontApp = NSSharedWorkspace('frontmostApplication')
+  let name = `${NSSharedWorkspace('frontmostApplication')('localizedName')}`
 
-  debug('frontApp found as follow', frontApp)
+  debug('frontApp found as follow', name)
 
-  return {
-    "name": ""+frontApp('localizedName')
-  }
-
+  return { name }
 }
 
-export function firePaste () {
-  exec(`osascript -e 'tell application "System Events"' -e 'keystroke "v" using command down' -e 'end tell'`)
+export function firePaste() {
+  exec(
+    `osascript -e 'tell application "System Events"' -e 'keystroke "v" using command down' -e 'end tell'`
+  )
 }

@@ -2,17 +2,18 @@
   font-family: 'Oxygen';
   font-style: normal;
   font-weight: 300;
-  src: local('Oxygen Light'), local('Oxygen-Light'), url(Oxygen-Light.woff) format('woff');
+  src: local('Oxygen Light'), local('Oxygen-Light'),
+    url(Oxygen-Light.woff) format('woff');
 }
 
 body {
-  background-color: rgba(20,20,20,.95);
+  background-color: rgba(20, 20, 20, 0.95);
   color: white;
   overflow: hidden;
   font-family: 'Oxygen';
   font-weight: 300;
   border-radius: 0;
-  border:none;
+  border: none;
 }
 
 #hodext-items::-webkit-scrollbar,
@@ -32,7 +33,6 @@ body {
 }
 
 div.hodext-item {
-
   width: 100%;
   height: 34px;
   line-height: 34px;
@@ -51,15 +51,14 @@ div.hodext-item {
 
   -webkit-user-select: none;
   cursor: default;
-
 }
 
 div.hodext-item.active {
-  background: rgba(255,255,255,0.2) !important;
+  background: rgba(255, 255, 255, 0.2) !important;
 }
 
 div.hodext-item:hover {
-  background: rgba(255,255,255,0.05);
+  background: rgba(255, 255, 255, 0.05);
 }
 
 #search-input {
@@ -71,7 +70,7 @@ div.hodext-item:hover {
   border-bottom: 2px solid #999;
   font-size: 22px;
   padding: 10px;
-  background: rgba(80,80,80,.2);
+  background: rgba(80, 80, 80, 0.2);
   color: white;
   margin-bottom: 8px;
 }
@@ -81,7 +80,7 @@ div.hodext-item:hover {
 }
 
 body.white {
-  background-color: rgba(230,230,230,.95);
+  background-color: rgba(230, 230, 230, 0.95);
 }
 
 body.white #search-input {
@@ -95,9 +94,9 @@ body.white div.hodext-item {
 }
 
 body.white div.hodext-item.active {
-  background: rgba(0,0,0,0.08) !important;
+  background: rgba(0, 0, 0, 0.08) !important;
 }
 
 body.white div.hodext-item:hover {
-  background: rgba(0,0,0,0.02class);
+  background: rgba(0, 0, 0, 0.02);
 }

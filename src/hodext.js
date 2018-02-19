@@ -9,30 +9,33 @@ import {
   ACTION_LOAD,
   EVENT_LOADED,
   EVENT_WRITE_ITEM,
-  EVENT_DELETE_ITEM
+  EVENT_DELETE_ITEM,
 } from './constants'
 
 const Controller = new HodextController({
-  watchImages: false,
-  repeatEvery: 250
+  watchImages: false, // TODO: Add image controller ~ GG
+  repeatEvery: 250,
 })
 
 const Storage = new HodextStorage()
 
 app.on('ready', () => {
-
   let hodextWindow = createHodextWindow()
-    
-  Controller.on(EVENT_WRITE_ITEM, (item) => {
-    
+
+  Controller.on(EVENT_WRITE_ITEM, item => {
     debug('Write item', item)
     hodextWindow.webContents.send(EVENT_WRITE_ITEM, item)
     Storage.write(item)
-
   })
 
   ipcMain.on(ACTION_LOAD, () => {
     hodextWindow.webContents.send(EVENT_LOADED, Storage.getStorage())
+  })
+
+  ipcMain.on(EVENT_DELETE_ITEM, (event, item, asActive) => {
+    debug('Delete item', item)
+    if (asActive) Controller.deleteText(item.content)
+    Storage.delete(item.key)
   })
 
   debug('APP is ready.')
@@ -41,5 +44,4 @@ app.on('ready', () => {
     debug('will quit once window is ready.')
     hodextWindow.on('show', app.quit)
   }
-
-});
+})

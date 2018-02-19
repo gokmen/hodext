@@ -15,21 +15,27 @@ import {
   EVENT_PASTE,
   EVENT_LOADED,
   EVENT_WRITE_ITEM,
+  EVENT_DELETE_ITEM,
   EVENT_USE_DARK,
   EVENT_CLIPBOARD_CHANGED,
 } from '../constants'
 
-
 export class HodextViewController extends EventEmitter {
-
-  constructor ( options = {} ) {
-
+  constructor(options = {}) {
     super()
 
     this.items = []
     this.options = options
     this.selectedItem = 0
     this.visibleCount = 0
+
+    ipcRenderer.on(EVENT_USE_DARK, (event, dark) => {
+      if (dark) {
+        document.body.classList.remove('white')
+      } else {
+        document.body.classList.add('white')
+      }
+    })
 
     ipcRenderer.on(EVENT_LOADED, (event, items) => {
       this.loadStoredItems(items)
@@ -44,47 +50,36 @@ export class HodextViewController extends EventEmitter {
     })
 
     debug('ViewController created')
-
   }
 
-  loadStoredItems (items) {
-
+  loadStoredItems(items) {
     this.items = []
     this.selectedItem = 0
 
-    items.forEach ( (item, index) => {
-      if (index <= MAX_ITEM_COUNT)
-        this.addItem(item)
+    items.forEach((item, index) => {
+      if (index <= MAX_ITEM_COUNT) this.addItem(item)
     })
 
     this.visibleCount = this.items.length
     this.dataChanged()
-    
   }
 
-  checkItemLimits () {
-
+  checkItemLimits() {
     if (this.visibleCount > MAX_ITEM_COUNT)
       this.removeItem(this.visibleCount - 1, false)
-
   }
 
-  filter (pattern) {
-
-    let re = new RegExp(pattern,"im")
+  filter(pattern) {
+    let re = new RegExp(pattern, 'im')
     let isVisible = true
     this.visibleCount = 0
 
     for (let item of this.items) {
-
-      if (pattern != '')
-        isVisible = re.test(item.content)
+      if (pattern != '') isVisible = re.test(item.content)
 
       item.visible = isVisible
 
-      if (isVisible)
-        this.visibleCount++
-
+      if (isVisible) this.visibleCount++
     }
 
     this.selectedItem = 0
@@ -97,7 +92,7 @@ export class HodextViewController extends EventEmitter {
       distance: 100,
       maxPatternLength: 32,
       minMatchCharLength: 1,
-      keys: ['content', 'app']
+      keys: ['content', 'app'],
     }
 
     debug(this.items)
@@ -105,21 +100,17 @@ export class HodextViewController extends EventEmitter {
     debug(fuse.search(pattern))
   }
 
-  activate (direction = 1) {
-
+  activate(direction = 1) {
     if (direction < 0 && this.selectedItem == 0)
       this.selectedItem = this.visibleCount - 1
     else if (direction > 0 && this.selectedItem == this.visibleCount - 1)
       this.selectedItem = 0
-    else
-      this.selectedItem = this.selectedItem + direction
+    else this.selectedItem = this.selectedItem + direction
 
     this.dataChanged()
-
   }
 
-  activateByKey (key) {
-
+  activateByKey(key) {
     if (!key) return
 
     let index = this.getActiveItemIndex(key)
@@ -130,16 +121,14 @@ export class HodextViewController extends EventEmitter {
     }
 
     focus()
-
   }
 
-  useByKey (key) {
+  useByKey(key) {
     this.activateByKey(key)
     this.useActive()
   }
 
-  setClipboard (newContent, paste) {
-
+  setClipboard(newContent, paste) {
     this.selectedItem = 0
     this.current = null
 
@@ -149,27 +138,24 @@ export class HodextViewController extends EventEmitter {
       ipcRenderer.send(EVENT_PASTE)
       ipcRenderer.send(EVENT_HIDE)
     }
-
   }
 
-  useActive (paste = true) {
-    this.setClipboard(this.removeActive(), paste)
+  useActive(paste = true) {
+    this.setClipboard(this.removeActive(true), paste)
   }
 
-  getActiveItem () {
+  getActiveItem() {
     return this.items[this.getActiveItemIndex()]
   }
 
-  getActiveItemIndex (key) {
-
+  getActiveItemIndex(key) {
     let index = 0
     let itemIndex = 0
 
     for (let item of this.items) {
       if (item.visible) {
         if (key) {
-          if (key == item.key)
-            return itemIndex
+          if (key == item.key) return itemIndex
         } else if (index == this.selectedItem) {
           return itemIndex
         }
@@ -177,77 +163,60 @@ export class HodextViewController extends EventEmitter {
       }
       itemIndex++
     }
-
   }
 
-  removeActive () {
-
+  removeActive(asActive) {
     if (this.visibleCount > 0)
-      return this.removeItem(this.getActiveItemIndex())
-
+      return this.removeItem(this.getActiveItemIndex(), true, asActive)
   }
 
-  addItem (item) {
+  addItem(item) {
+    this.visibleCount++
     this.items.unshift({
-      key     : item.time,
-      visible : true,
-      app     : item.app.name,
-      content : item.content
+      key: item.time,
+      visible: true,
+      app: item.app.name,
+      content: item.content,
     })
   }
 
-  removeItem (index, emitChange = true) {
-
+  removeItem(index, emitChange = true, asActive = false) {
     let item = this.items[index]
+
+    debug('current items:', this.items)
+    debug('item to remove:', index, item)
+
+    ipcRenderer.send(EVENT_DELETE_ITEM, item, asActive)
 
     this.items.splice(index, 1)
 
     this.visibleCount--
 
-    if (this.selectedItem > 0)
-      this.selectedItem--
-    else
-      this.selectedItem = 0
+    if (this.selectedItem > 0) this.selectedItem--
+    else this.selectedItem = 0
 
-    if (emitChange)
-      this.dataChanged()
+    if (emitChange) this.dataChanged()
 
     return item.content
-
   }
 
-  updateScrolls () {
-
+  updateScrolls() {
     let diff = this.selectedItem - SCROLL_THRESHOLD
     let itemContainer = document.getElementById('hodext-items')
-    if (itemContainer)
-      itemContainer.scrollTop = ITEM_HEIGHT * diff
-
+    if (itemContainer) itemContainer.scrollTop = ITEM_HEIGHT * diff
   }
 
-  dataChanged (options = {}) {
-
+  dataChanged(options = {}) {
     let { updateScrolls = true } = options
 
-    if (updateScrolls)
-      this.updateScrolls()
+    if (updateScrolls) this.updateScrolls()
 
     this.emit(EVENT_CLIPBOARD_CHANGED)
-
   }
-
 }
 
 let Controller
 
-export function getViewController () {
-  return Controller = Controller || new HodextViewController()
+export function getViewController() {
+  return (Controller = Controller || new HodextViewController())
 }
-
-ipcRenderer.on(EVENT_USE_DARK, (event, dark) => {
-  if (dark) {
-    document.body.classList.remove('white')
-  } else {
-    document.body.classList.add('white')
-  }
-})

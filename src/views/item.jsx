@@ -6,9 +6,7 @@ import { getViewController } from './viewcontroller'
 let Controller = getViewController()
 
 export class HodextItem extends React.Component {
-
   render() {
-
     let data = this.props.data
     let style = 'hodext-item'
     let boundClick = this.handleClick.bind(this)
@@ -21,19 +19,19 @@ export class HodextItem extends React.Component {
         className={style}
         onClick={boundClick}
         onDoubleClick={boundDoubleClick}
-      >{data.content}</div>
+      >
+        {data.content}
+      </div>
     )
-
   }
 
-  handleClick () {
+  handleClick() {
     debug('clicked on item')
     Controller.activateByKey(this.props.data.key)
   }
 
-  handleDoubleClick () {
+  handleDoubleClick() {
     debug('double clicked on item')
     Controller.useByKey(this.props.data.key)
   }
-
 }
