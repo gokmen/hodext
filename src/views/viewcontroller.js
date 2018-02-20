@@ -29,6 +29,20 @@ export class HodextViewController extends EventEmitter {
     this.selectedItem = 0
     this.visibleCount = 0
 
+    this.fuseOptions = {
+      tokenize: true,
+      threshold: 0.2,
+      location: 0,
+      distance: 100,
+      shouldSort: true,
+      matchAllTokens: true,
+      maxPatternLength: 32,
+      minMatchCharLength: 1,
+      keys: ['content', 'app'],
+    }
+
+    this.updateFuseIndex()
+
     ipcRenderer.on(EVENT_USE_DARK, (event, dark) => {
       if (dark) {
         document.body.classList.remove('white')
@@ -57,8 +71,10 @@ export class HodextViewController extends EventEmitter {
     this.selectedItem = 0
 
     items.forEach((item, index) => {
-      if (index <= MAX_ITEM_COUNT) this.addItem(item)
+      if (index <= MAX_ITEM_COUNT) this.addItem(item, true)
     })
+
+    this.updateFuseIndex()
 
     this.visibleCount = this.items.length
     this.dataChanged()
@@ -70,34 +86,25 @@ export class HodextViewController extends EventEmitter {
   }
 
   filter(pattern) {
-    let re = new RegExp(pattern, 'im')
-    let isVisible = true
-    this.visibleCount = 0
+    if (pattern == '') {
+      this.visibleCount = this.items.length
 
-    for (let item of this.items) {
-      if (pattern != '') isVisible = re.test(item.content)
+      for (let item of this.items) {
+        item.visible = true
+      }
+    } else {
+      let found = this.fuse.search(pattern)
 
-      item.visible = isVisible
+      debug('found:', found)
+      this.visibleCount = found.length
 
-      if (isVisible) this.visibleCount++
+      for (let item of this.items) {
+        item.visible = !!found.find(i => i.key == item.key)
+      }
     }
 
     this.selectedItem = 0
     this.dataChanged({ updateScrolls: false })
-
-    let options = {
-      tokenize: true,
-      threshold: 0.2,
-      location: 0,
-      distance: 100,
-      maxPatternLength: 32,
-      minMatchCharLength: 1,
-      keys: ['content', 'app'],
-    }
-
-    debug(this.items)
-    let fuse = new Fuse(this.items, options)
-    debug(fuse.search(pattern))
   }
 
   activate(direction = 1) {
@@ -170,7 +177,7 @@ export class HodextViewController extends EventEmitter {
       return this.removeItem(this.getActiveItemIndex(), true, asActive)
   }
 
-  addItem(item) {
+  addItem(item, initial = false) {
     this.visibleCount++
     this.items.unshift({
       key: item.time,
@@ -178,6 +185,7 @@ export class HodextViewController extends EventEmitter {
       app: item.app.name,
       content: item.content,
     })
+    if (!initial) this.updateFuseIndex()
   }
 
   removeItem(index, emitChange = true, asActive = false) {
@@ -189,6 +197,7 @@ export class HodextViewController extends EventEmitter {
     ipcRenderer.send(EVENT_DELETE_ITEM, item, asActive)
 
     this.items.splice(index, 1)
+    this.updateFuseIndex()
 
     this.visibleCount--
 
@@ -212,6 +221,10 @@ export class HodextViewController extends EventEmitter {
     if (updateScrolls) this.updateScrolls()
 
     this.emit(EVENT_CLIPBOARD_CHANGED)
+  }
+
+  updateFuseIndex() {
+    this.fuse = new Fuse(this.items, this.fuseOptions)
   }
 }
 
