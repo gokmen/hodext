@@ -135,8 +135,8 @@ export class HodextViewController extends EventEmitter {
     clipboard.writeText(newContent)
 
     if (paste) {
-      ipcRenderer.send(EVENT_PASTE)
       ipcRenderer.send(EVENT_HIDE)
+      ipcRenderer.send(EVENT_PASTE)
     }
   }
 
