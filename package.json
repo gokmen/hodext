@@ -1,5 +1,6 @@
 {
   "name": "hodext",
+  "productName": "Hodext",
   "version": "0.1.0",
   "main": "app/boot.js",
   "license": "MIT",
@@ -8,7 +9,8 @@
     "url": "git+https://github.com/gokmen/hodext.git"
   },
   "scripts": {
-    "start": "electron ."
+    "start": "electron .",
+    "build:mac": "electron-packager . --out ./dist --platform=darwin --arch=x64 --asar --overwrite --icon=./assets/images/Hodext.icns"
   },
   "dependencies": {
     "babel-preset-env": "^1.6.1",
@@ -21,7 +23,8 @@
     "react-dom": "^16.2.0"
   },
   "devDependencies": {
-    "electron": "^1.8.2"
+    "electron": "^1.8.2",
+    "electron-packager": "^11.0.1"
   },
   "description": "Hold the Text!",
   "bugs": {

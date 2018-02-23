@@ -13,10 +13,10 @@ TODO
 - [x] Persist history
 - [x] Navigation with mouse support
 - [x] Show more on long contents
-- [ ] Keep application data on clipboard items
+- [x] Keep application data on clipboard items
 - [ ] Icon on main screen
 - [ ] Launch at boot
-- [ ] Splash screen
+- [?] Splash screen
 - [ ] Image support in history list
 - [ ] Custom theme support
 - [ ] Linux support
