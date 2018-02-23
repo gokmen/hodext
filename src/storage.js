@@ -2,6 +2,7 @@ const debug = require('debug')('hodext:storage')
 
 import { EventEmitter } from 'events'
 import fs from 'fs'
+import path from 'path'
 
 import { STORAGE_FILE, NEWLINE, EVENT_LOADED } from './constants'
 
@@ -50,7 +51,7 @@ export class HodextStorage extends EventEmitter {
 
       debug('storing', json)
 
-      fs.appendFile(STORAGE_FILE, json, err => {
+      fs.appendFile(this.storagePath, json, err => {
         this.locked = false
         if (this.writeBuffer.length) this.sync()
       })
@@ -81,14 +82,14 @@ export class HodextStorage extends EventEmitter {
 
   dumpStorage() {
     try {
-      fs.accessSync(STORAGE_FILE, fs.constants.R_OK | fs.constants.W_OK)
+      fs.accessSync(this.storagePath, fs.constants.R_OK | fs.constants.W_OK)
     } catch (e) {
-      fs.writeFileSync(STORAGE_FILE, '')
+      fs.writeFileSync(this.storagePath, '')
       debug('created a new storage.')
     }
 
     return fs
-      .readFileSync(STORAGE_FILE)
+      .readFileSync(this.storagePath)
       .toString()
       .split(NEWLINE)
       .filter(Boolean)
@@ -99,6 +100,10 @@ export class HodextStorage extends EventEmitter {
 
   syncStorage(cb) {
     let json = this.storage.map(this.jsonify)
-    fs.writeFile(STORAGE_FILE, json.join(''), cb)
+    fs.writeFile(this.storagePath, json.join(''), cb)
+  }
+
+  get storagePath() {
+    return path.join(this.options.appData, STORAGE_FILE)
   }
 }

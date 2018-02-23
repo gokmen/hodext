@@ -17,7 +17,7 @@ const Controller = new HodextController({
   repeatEvery: 250,
 })
 
-const Storage = new HodextStorage()
+const Storage = new HodextStorage({ appData: app.getPath('appData') })
 
 app.on('ready', () => {
   let hodextWindow = createHodextWindow()
