@@ -17,3 +17,15 @@ export const EVENT_CLIPBOARD_CHANGED = 'ClipboardChanged'
 export const EVENT_PASTE = 'Paste'
 export const EVENT_HIDE = 'Hide'
 export const EVENT_USE_DARK = 'UseDark'
+
+export const INITIAL_DATA = [
+  "Welcome to Hodext, copy some text and I'll hold it for you!",
+  'Start typing to filter items in your clipboard',
+  'You can navigate in clipboard with [Ctrl+J] and [Ctrl+K]',
+  'Mouse navigation is also supported if you like',
+  'Hit [Enter] to paste selected item to the previous active window',
+  '[Ctrl+Enter] will only update the clipboard buffer',
+  'If you want to delete an item [Ctrl+Backspace] is your friend',
+  'You can close this window with [Esc] or by clicking any other window',
+  'For more info please visit: https://github.com/gokmen/hodext',
+]

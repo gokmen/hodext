@@ -4,7 +4,7 @@ import { EventEmitter } from 'events'
 import fs from 'fs'
 import path from 'path'
 
-import { STORAGE_FILE, NEWLINE, EVENT_LOADED } from './constants'
+import { STORAGE_FILE, NEWLINE, EVENT_LOADED, INITIAL_DATA } from './constants'
 
 export class HodextStorage extends EventEmitter {
   constructor(options = {}) {
@@ -69,8 +69,12 @@ export class HodextStorage extends EventEmitter {
     }
 
     this.storage = this.dumpStorage()
-
     debug('storage loaded with', this.storage.length, 'items')
+
+    if (this.storage.length == 0) {
+      this.addHelpData()
+    }
+
     this.emit(EVENT_LOADED, this.storage)
 
     return this.storage
@@ -101,6 +105,22 @@ export class HodextStorage extends EventEmitter {
   syncStorage(cb) {
     let json = this.storage.map(this.jsonify)
     fs.writeFile(this.storagePath, json.join(''), cb)
+  }
+
+  addHelpData() {
+    let app = { name: 'Hodext' }
+    let type = 'text'
+    let time = Date.now()
+
+    INITIAL_DATA.reverse().forEach(content => {
+      this.storage.push({
+        content,
+        app,
+        time,
+        type,
+      })
+      time += 1
+    })
   }
 
   get storagePath() {
