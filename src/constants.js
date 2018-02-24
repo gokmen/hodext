@@ -29,3 +29,80 @@ export const INITIAL_DATA = [
   'You can close this window with [Esc] or by clicking any other window',
   'For more info please visit: https://github.com/gokmen/hodext',
 ]
+
+import { app } from 'electron'
+
+export const DEFAULT_MENU = [
+  {
+    label: 'Hodext',
+    submenu: [
+      {
+        label: 'About Hodext',
+        role: 'about',
+      },
+      {
+        label: 'Quit',
+        accelerator: 'Command+Q',
+        click: function() {
+          app.quit()
+        },
+      },
+    ],
+  },
+  {
+    label: 'Edit',
+    submenu: [
+      {
+        label: 'Undo',
+        accelerator: 'CmdOrCtrl+Z',
+        role: 'undo',
+      },
+      {
+        label: 'Redo',
+        accelerator: 'Shift+CmdOrCtrl+Z',
+        role: 'redo',
+      },
+      {
+        type: 'separator',
+      },
+      {
+        label: 'Cut',
+        accelerator: 'CmdOrCtrl+X',
+        role: 'cut',
+      },
+      {
+        label: 'Copy',
+        accelerator: 'CmdOrCtrl+C',
+        role: 'copy',
+      },
+      {
+        label: 'Paste',
+        accelerator: 'CmdOrCtrl+V',
+        role: 'paste',
+      },
+      {
+        label: 'Select All',
+        accelerator: 'CmdOrCtrl+A',
+        role: 'selectall',
+      },
+    ],
+  },
+  {
+    label: 'Window',
+    role: 'window',
+    submenu: [
+      {
+        label: 'Close',
+        accelerator: 'CmdOrCtrl+W',
+        role: 'close',
+      },
+      {
+        label: 'Toggle Developer Tools',
+        accelerator: 'Alt+Command+I',
+        click: (item, fw) => {
+          if (fw && process.env.DEBUG) fw.toggleDevTools()
+        },
+      },
+    ],
+  },
+]

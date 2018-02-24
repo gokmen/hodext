@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://raw.githubusercontent.com/gokmen/hodext/master/assets/images/hodext-banner@2x.png" />
+  <img src="https://raw.githubusercontent.com/gokmen/hodext/master/assets/images/hodext-banner@2x.png" width="20%" />
 </p>
 
 # Hodext, Hold the text!

@@ -2,6 +2,7 @@ const debug = require('debug')('hodext:window')
 
 import {
   app,
+  Menu,
   systemPreferences,
   globalShortcut,
   BrowserWindow,
@@ -10,7 +11,12 @@ import {
 
 import path from 'path'
 import { firePaste } from './macutils'
-import { EVENT_HIDE, EVENT_PASTE, EVENT_USE_DARK } from './constants'
+import {
+  EVENT_HIDE,
+  EVENT_PASTE,
+  EVENT_USE_DARK,
+  DEFAULT_MENU,
+} from './constants'
 
 let hodextQuit = false
 let hodextWindow = null
@@ -45,6 +51,9 @@ app.on('window-all-closed', () => {
 })
 
 app.on('ready', () => {
+  const menu = Menu.buildFromTemplate(DEFAULT_MENU)
+  Menu.setApplicationMenu(menu)
+
   globalShortcut.register('Alt+Space', () => {
     if (hodextWindow.isFocused() && hodextWindow.isVisible()) {
       hideHodext()
