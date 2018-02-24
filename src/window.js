@@ -66,25 +66,39 @@ systemPreferences.subscribeNotification(
 )
 
 export function createHodextWindow() {
-  hodextWindow = new BrowserWindow({
-    frame: false,
-    transparent: true,
+  const DEBUG = !!process.env.DEBUG
+  const options = {
+    frame: DEBUG,
+    transparent: !DEBUG,
     resizable: false,
+    minimizable: false,
+    alwaysOnTop: true,
     width: 500,
     height: 372,
     show: false,
     scrollBounce: true,
     fullscreenable: false,
     webPreferences: {
-      preload: __dirname + '/../assets/script/preload.js',
+      preload: path.join(__dirname, '/../assets/script/preload.js'),
     },
+  }
+
+  hodextWindow = new BrowserWindow(options)
+
+  options.parent = hodextWindow
+  let splashScreen = new BrowserWindow(options)
+  splashScreen.loadURL(
+    path.join('file://', __dirname, '/../assets/splash.html')
+  )
+  splashScreen.on('closed', () => (splashScreen = null))
+  splashScreen.webContents.on('did-finish-load', () => {
+    splashScreen.show()
   })
 
   hodextWindow.loadURL(path.join('file://', __dirname, '/../assets/index.html'))
 
   debug('HodextWindow created!')
 
-  hodextWindow.setAlwaysOnTop(true)
   hodextWindow.setVisibleOnAllWorkspaces(true)
 
   hodextWindow.on('close', event => {
@@ -113,6 +127,7 @@ export function createHodextWindow() {
 
   hodextWindow.once('ready-to-show', () => {
     debug('HodextWindow is ready to show!')
+    splashScreen.close()
     hodextWindow.show()
   })
 

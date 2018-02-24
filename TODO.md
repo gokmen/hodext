@@ -14,9 +14,10 @@ TODO
 - [x] Navigation with mouse support
 - [x] Show more on long contents
 - [x] Keep application data on clipboard items
-- [ ] Icon on main screen
+- [x] Icon on main screen
+- [x] Splash screen
+- [ ] Tests
 - [ ] Launch at boot
-- [?] Splash screen
 - [ ] Image support in history list
 - [ ] Custom theme support
 - [ ] Linux support
@@ -34,7 +35,7 @@ TODO
   - [ ] Do not follow apps setting
   - [ ] Check for updates
 
-- [ ] Package for Mac
+- [x] Package for Mac
 - [ ] Package for Linux
 - [ ] Package for Windows
 

@@ -91,12 +91,16 @@ div.hodext-item:hover {
   height: 42px;
   line-height: 42px;
   border: none;
-  border-bottom: 2px solid #999;
   font-size: 22px;
   padding: 10px;
   background: rgba(80, 80, 80, 0.2);
   color: white;
   margin-bottom: 8px;
+  background: url(../images/hodext-logo@2x.png);
+  background-size: 40px;
+  background-repeat: no-repeat;
+  background-position-x: 100%;
+  padding-right: 42px;
 }
 
 #search-input:focus {
@@ -108,7 +112,6 @@ body.white {
 }
 
 body.white #search-input {
-  border-bottom: 2px solid #666;
   color: #333;
 }
 
