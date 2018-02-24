@@ -45,16 +45,40 @@ div.hodext-item {
   border-bottom: 1px solid #333;
   box-sizing: border-box;
 
-  text-overflow: ellipsis;
+  display: flex;
   white-space: nowrap;
-  overflow: hidden;
 
   -webkit-user-select: none;
   cursor: default;
 }
 
+div.hodext-item p {
+  padding: 0;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  flex-grow: 10;
+}
+
+div.hodext-item > div {
+  display: none;
+  flex-direction: column;
+  padding-left: 6px;
+  opacity: 0.8;
+}
+
+div.hodext-item span {
+  font-size: 8pt;
+  text-align: right;
+  line-height: 16px;
+}
+
 div.hodext-item.active {
   background: rgba(255, 255, 255, 0.2) !important;
+}
+
+div.hodext-item.active > div {
+  display: flex;
 }
 
 div.hodext-item:hover {

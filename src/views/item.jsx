@@ -19,18 +19,20 @@ export class HodextItem extends React.Component {
         onClick={boundClick}
         onDoubleClick={boundDoubleClick}
       >
-        {data.content}
+        <p>{data.content}</p>
+        <div>
+          <span>{data.app}</span>
+          <span>{moment(data.key).fromNow()}</span>
+        </div>
       </div>
     )
   }
 
   handleClick() {
-    debug('clicked on item')
     Controller.activateByKey(this.props.data.key)
   }
 
   handleDoubleClick() {
-    debug('double clicked on item')
     Controller.useByKey(this.props.data.key)
   }
 }
