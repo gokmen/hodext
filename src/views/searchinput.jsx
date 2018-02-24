@@ -6,15 +6,6 @@ import Controller from './viewcontroller'
 import { EVENT_HIDE } from '../constants'
 
 export class HodextSearchInput extends React.Component {
-  constructor(props, context) {
-    super(props, context)
-    debug('created')
-  }
-
-  componentDidMount() {
-    debug('on screen now')
-  }
-
   render() {
     return (
       <input
@@ -37,8 +28,10 @@ export class HodextSearchInput extends React.Component {
       Controller.useActive(!event.ctrlKey)
     } else if (event.keyCode == 8 && event.ctrlKey) {
       Controller.removeActive()
-    } else if (event.keyCode == 27) {
+    } else if (event.keyCode == 27 || (event.keyCode == 67 && event.ctrlKey)) {
       ipcRenderer.send(EVENT_HIDE)
+    } else if (event.keyCode == 9) {
+      event.preventDefault()
     }
   }
 
