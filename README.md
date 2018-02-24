@@ -68,8 +68,8 @@ this as a resource for developing a desktop application with Electron and React.
 
 I'm planning to work on Linux support and the settings panel first since
 currently there is no way to change shortcuts etc. If you want to help you can
-take a look to [TODO.md](hodext/TODO.md) and
-[DEVELOPMENT.md](hodext/DEVELOPMENT.md)
+take a look to [TODO.md](/TODO.md) and
+[DEVELOPMENT.md](/DEVELOPMENT.md)
 
 ## License
 
