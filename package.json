@@ -34,7 +34,8 @@
   "homepage": "https://github.com/gokmen/hodext#readme",
   "keywords": [
     "clipboard",
-    "electron"
+    "electron",
+    "react"
   ],
   "author": "Gokmen Goksel <gokmen@goksel.me>"
 }

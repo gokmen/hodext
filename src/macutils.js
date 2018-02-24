@@ -29,7 +29,7 @@ export function firePaste() {
   NodObjc.CGEventSetFlags(vKeyDown, NodObjc.kCGEventFlagMaskCommand)
   NodObjc.CGEventSetFlags(vKeyUp, NodObjc.kCGEventFlagMaskCommand)
 
-  // Post events
+  // Post events to trigger Cmd+V on active window to paste clipboard content
   NodObjc.CGEventPost(NodObjc.kCGHIDEventTap, vKeyDown)
   NodObjc.CGEventPost(NodObjc.kCGHIDEventTap, vKeyUp)
 }
