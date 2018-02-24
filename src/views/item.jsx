@@ -1,9 +1,8 @@
 const debug = _debug('hodext:item')
 
 import React from 'react'
-import { getViewController } from './viewcontroller'
-
-let Controller = getViewController()
+import Controller from './viewcontroller'
+import moment from 'moment'
 
 export class HodextItem extends React.Component {
   render() {

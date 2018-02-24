@@ -2,10 +2,8 @@ const debug = _debug('hodext:searchinput')
 
 import React from 'react'
 import { ipcRenderer } from 'electron'
-import { getViewController } from './viewcontroller'
+import Controller from './viewcontroller'
 import { EVENT_HIDE } from '../constants'
-
-let Controller = getViewController()
 
 export class HodextSearchInput extends React.Component {
   constructor(props, context) {

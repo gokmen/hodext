@@ -1,6 +1,6 @@
 const debug = _debug('hodext:viewcontroller')
-const Fuse = require('fuse.js')
 
+import Fuse from 'fuse.js'
 import { clipboard, ipcRenderer } from 'electron'
 import { EventEmitter } from 'events'
 import { focus } from './helpers'
@@ -20,7 +20,7 @@ import {
   EVENT_CLIPBOARD_CHANGED,
 } from '../constants'
 
-export class HodextViewController extends EventEmitter {
+class HodextViewController extends EventEmitter {
   constructor(options = {}) {
     super()
 
@@ -228,8 +228,4 @@ export class HodextViewController extends EventEmitter {
   }
 }
 
-let Controller
-
-export function getViewController() {
-  return (Controller = Controller || new HodextViewController())
-}
+export default new HodextViewController()
