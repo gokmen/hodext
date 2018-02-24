@@ -8,31 +8,34 @@ import {
   ipcMain,
 } from 'electron'
 
+import path from 'path'
 import { firePaste } from './macutils'
 import { EVENT_HIDE, EVENT_PASTE, EVENT_USE_DARK } from './constants'
 
+let hodextQuit = false
 let hodextWindow = null
 
-let hideHodext = () => {
+function hideHodext() {
   hodextWindow.blurWebView()
   hodextWindow.blur()
   app.hide()
 }
 
-let showHodext = () => {
+function showHodext() {
   app.show()
   hodextWindow.focus()
   hodextWindow.focusOnWebView()
-}
-
-export function setHodextTheme() {
-  hodextWindow.webContents.send(EVENT_USE_DARK, systemPreferences.isDarkMode())
 }
 
 if (app.makeSingleInstance(() => showHodext())) {
   process.exit()
 }
 
+function setHodextTheme() {
+  hodextWindow.webContents.send(EVENT_USE_DARK, systemPreferences.isDarkMode())
+}
+
+app.setName('Hodext')
 app.dock.hide()
 
 app.on('window-all-closed', () => {
@@ -51,9 +54,8 @@ app.on('ready', () => {
   })
 })
 
-app.on('will-quit', () => {
-  globalShortcut.unregisterAll()
-})
+app.on('will-quit', () => globalShortcut.unregisterAll())
+app.on('before-quit', () => (hodextQuit = true))
 
 ipcMain.on(EVENT_HIDE, hideHodext)
 ipcMain.on(EVENT_PASTE, firePaste)
@@ -78,14 +80,24 @@ export function createHodextWindow() {
     },
   })
 
-  hodextWindow.loadURL('file://' + __dirname + '/../assets/index.html')
+  hodextWindow.loadURL(path.join('file://', __dirname, '/../assets/index.html'))
 
   debug('HodextWindow created!')
 
   hodextWindow.setAlwaysOnTop(true)
   hodextWindow.setVisibleOnAllWorkspaces(true)
 
-  if (!process.env.DEBUG) {
+  hodextWindow.on('close', event => {
+    if (!hodextQuit) {
+      event.preventDefault()
+      hideHodext()
+      return false
+    } else {
+      return true
+    }
+  })
+
+  if (!DEBUG) {
     hodextWindow.on('blur', () => {
       app.hide()
     })
@@ -93,6 +105,8 @@ export function createHodextWindow() {
     hodextWindow.on('closed', () => {
       hodextWindow = null
     })
+  } else {
+    hodextWindow.webContents.openDevTools()
   }
 
   hodextWindow.webContents.once('dom-ready', setHodextTheme)
