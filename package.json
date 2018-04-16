@@ -1,7 +1,7 @@
 {
   "name": "hodext",
   "productName": "Hodext",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "main": "app/boot.js",
   "license": "MIT",
   "repository": {
@@ -18,14 +18,14 @@
     "babel-register": "^6.26.0",
     "debug": "^3.1.0",
     "fuse.js": "^3.2.0",
-    "moment": "^2.20.1",
+    "moment": "^2.22.1",
     "nodobjc": "^2.1.0",
-    "react": "^16.2.0",
-    "react-dom": "^16.2.0"
+    "react": "^16.3.1",
+    "react-dom": "^16.3.1"
   },
   "devDependencies": {
-    "electron": "^1.8.2",
-    "electron-packager": "^11.0.1"
+    "electron": "^1.8.4",
+    "electron-packager": "^12.0.1"
   },
   "description": "Hold the Text!",
   "bugs": {
