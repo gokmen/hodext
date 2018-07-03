@@ -37,7 +37,7 @@ export class HodextStorage extends EventEmitter {
 
     this.locked = true
 
-    if (this.deleteBuffer.size) {
+    if (this.deleteBuffer && this.deleteBuffer.size) {
       this.storage = this.storage.filter(
         item => !this.deleteBuffer.has(item.time)
       )
@@ -46,7 +46,7 @@ export class HodextStorage extends EventEmitter {
       this.deleteBuffer.clear()
 
       this.syncStorage(() => (this.locked = false))
-    } else if (this.writeBuffer.length) {
+    } else if (this.writeBuffer && this.writeBuffer.length) {
       let json = this.jsonify(this.writeBuffer.pop())
 
       debug('storing', json)
