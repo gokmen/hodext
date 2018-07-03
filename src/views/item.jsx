@@ -24,6 +24,7 @@ export class HodextItem extends React.Component {
           <span>{data.app}</span>
           <span>{moment(data.key).fromNow()}</span>
         </div>
+        <span>{data.shortcut}</span>
       </div>
     )
   }

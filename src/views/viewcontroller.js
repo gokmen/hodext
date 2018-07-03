@@ -185,6 +185,7 @@ class HodextViewController extends EventEmitter {
       visible: true,
       app: item.app.name,
       content: item.content,
+      shortcut: '',
     })
     if (!initial) this.updateFuseIndex()
   }
@@ -220,6 +221,11 @@ class HodextViewController extends EventEmitter {
     let { updateScrolls = true } = options
 
     if (updateScrolls) this.updateScrolls()
+
+    this.items.filter(item => item.visible).forEach((item, i) => {
+      if (i < 9) item.shortcut = `⌘ ${i + 1}`
+      else item.shortcut = ''
+    })
 
     this.emit(EVENT_CLIPBOARD_CHANGED)
   }
