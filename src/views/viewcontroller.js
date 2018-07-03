@@ -117,6 +117,15 @@ class HodextViewController extends EventEmitter {
     this.dataChanged()
   }
 
+  activateAndPaste(order) {
+    const visibleItems = this.items.filter(item => item.visible)
+    const item = visibleItems[order]
+
+    if (item) {
+      this.useByKey(item.key)
+    }
+  }
+
   activateByKey(key) {
     if (!key) return
 

@@ -30,6 +30,8 @@ export class HodextSearchInput extends React.Component {
       Controller.removeActive()
     } else if (event.keyCode == 27 || (event.keyCode == 67 && event.ctrlKey)) {
       ipcRenderer.send(EVENT_HIDE)
+    } else if (event.metaKey && event.keyCode >= 49 && event.keyCode <= 57) {
+      Controller.activateAndPaste(event.key - 1)
     } else if (event.keyCode == 9) {
       event.preventDefault()
     }
