@@ -120,7 +120,8 @@ class HodextViewController extends EventEmitter {
   activateByKey(key) {
     if (!key) return
 
-    let index = this.getActiveItemIndex(key)
+    const visibleItems = this.items.filter(item => item.visible)
+    const index = visibleItems.findIndex(item => item.key == key)
 
     if (index >= 0) {
       this.selectedItem = index
