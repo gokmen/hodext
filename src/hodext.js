@@ -33,9 +33,11 @@ app.on('ready', () => {
   })
 
   ipcMain.on(EVENT_DELETE_ITEM, (event, item, asActive) => {
-    debug('Delete item', item)
-    if (asActive) Controller.deleteText(item.content)
-    Storage.delete(item.key)
+    if (item) {
+      debug('Delete item', item)
+      if (asActive) Controller.deleteText(item.content)
+      Storage.delete(item.key)
+    }
   })
 
   debug('APP is ready.')
