@@ -33,10 +33,10 @@ Currently Nodobjc has an ABI issue with the current release (`2.1.0`) which
 requires rebuild after installation;
 
 ```
- $ npm rebuild --runtime=electron --target=1.8.2 --disturl=https://atom.io/download/atom-shell --abi=50
+ $ npm rebuild --runtime=electron --target=1.8.8 --disturl=https://atom.io/download/atom-shell --abi=57
 ```
 
-this will rebuild it for Electron `1.8.2` version. If Electron version is
+this will rebuild it for Electron `1.8.8` version. If Electron version is
 different you will need to change the version string in `target`
 
 ref: https://github.com/TooTallNate/NodObjC/issues/85
